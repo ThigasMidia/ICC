@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "utils.h"
+#include "DoubleType.h"
 #include "ZeroFuncao.h"
 
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro
@@ -39,50 +40,50 @@ real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro
 real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, real_t *raiz, int Rapido) {
     *it = 1;
-    real_t xM, xM_old;
+    Double_t xM, xM_old;
     real_t *px1, *px2, *dpx;
     px1 = malloc(sizeof(real_t));
     px2 = malloc(sizeof(real_t));
     dpx = malloc(sizeof(real_t));
     *px1 = 0;
     *px2 = 0;
-    xM_old = 0;
-    xM = (a+b)/2;
+    xM_old.f = 0;
+    xM.f = (a+b)/2;
     if(Rapido) {
         calcPolinomio_rapido(p, a, px1, dpx);
-        calcPolinomio_rapido(p, xM, px2, dpx);
+        calcPolinomio_rapido(p, xM.f, px2, dpx);
     }
     else {
         calcPolinomio_lento(p, a, px1, dpx);
-        calcPolinomio_lento(p, xM, px2, dpx);
+        calcPolinomio_lento(p, xM.f, px2, dpx);
     }
 
     if((*px1)*(*px2) < 0)
-        b = xM;
+        b = xM.f;
     else if((*px1)*(*px2) > 0)
-        a = xM;
+        a = xM.f;
     else
-        return xM;
+        return xM.f;
 
-    int zero = 1;
-    while(((!criterioParada && (fabs(xM - xM_old) > EPS))||(criterioParada == 1 && (xM > DBL_EPSILON))||(criterioParada == 2 && zero)) && (*it < MAXIT)) {
+    while(((!criterioParada && (fabs(xM.f - xM_old.f) > EPS))||(criterioParada == 1 && (fabs(xM.f) > DBL_EPSILON))||(criterioParada == 2 && (fabs(xM.i - xM_old.i) - 1 > ULPS))) && (*it < MAXIT)) {
         *it = *it + 1;
-        xM = (a+b)/2;
+        xM_old.f = xM.f;
+        xM.f = (a+b)/2;
         if(Rapido) {
             calcPolinomio_rapido(p, a, px1, dpx);
-            calcPolinomio_rapido(p, xM, px2, dpx);
+            calcPolinomio_rapido(p, xM.f, px2, dpx);
             }
         else {
             calcPolinomio_lento(p, a, px1, dpx);
-            calcPolinomio_lento(p, xM, px2, dpx);
+            calcPolinomio_lento(p, xM.f, px2, dpx);
         }
 
         if((*px1)*(*px2) < 0)
-            b = xM;
+            b = xM.f;
         else if((*px1)*(*px2) > 0)
-            a = xM;
+            a = xM.f;
     }
-    *raiz = xM;
+    *raiz = xM.f;
     free(px1);
     free(px2);
     free(dpx);
@@ -125,12 +126,9 @@ int main() {
     px = malloc(sizeof(size_t));
     dpx = malloc(sizeof(size_t));
     *px = *dpx = 0;
-    calcPolinomio_rapido(*p,0.89,px,dpx);
-    printf("POLI: %f\n", *px);
-    printf("DERI: %f\n", *dpx);
     int *px1;
     px1 = malloc(sizeof(int));
-    bisseccao(*p,0,3,0,px1,dpx,1); 
+    bisseccao(*p,0,3,1,px1,dpx,1); 
     printf("IT: %d\n", *px1);
     printf("RAIZ: %f\n", *dpx);
     newtonRaphson(*p, 3, 0, px1, dpx, 1);
