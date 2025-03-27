@@ -41,26 +41,23 @@ real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_
 real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, real_t *raiz, int Rapido) {
     *it = 1;
     Double_t xM, xM_old;
-    real_t *px1, *px2, *dpx;
-    px1 = malloc(sizeof(real_t));
-    px2 = malloc(sizeof(real_t));
-    dpx = malloc(sizeof(real_t));
-    *px1 = 0;
-    *px2 = 0;
+    real_t px1, px2, dpx;
+    px1 = 0;
+    px2 = 0;
     xM_old.f = 0;
     xM.f = (a+b)/2;
     if(Rapido) {
-        calcPolinomio_rapido(p, a, px1, dpx);
-        calcPolinomio_rapido(p, xM.f, px2, dpx);
+        calcPolinomio_rapido(p, a, &px1, &dpx);
+        calcPolinomio_rapido(p, xM.f, &px2, &dpx);
     }
     else {
-        calcPolinomio_lento(p, a, px1, dpx);
-        calcPolinomio_lento(p, xM.f, px2, dpx);
+        calcPolinomio_lento(p, a, &px1, &dpx);
+        calcPolinomio_lento(p, xM.f, &px2, &dpx);
     }
 
-    if((*px1)*(*px2) < 0)
+    if(px1*px2 < 0)
         b = xM.f;
-    else if((*px1)*(*px2) > 0)
+    else if(px1*px2 > 0)
         a = xM.f;
     else
         return xM.f;
@@ -70,23 +67,20 @@ real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, 
         xM_old.f = xM.f;
         xM.f = (a+b)/2;
         if(Rapido) {
-            calcPolinomio_rapido(p, a, px1, dpx);
-            calcPolinomio_rapido(p, xM.f, px2, dpx);
+            calcPolinomio_rapido(p, a, &px1, &dpx);
+            calcPolinomio_rapido(p, xM.f, &px2, &dpx);
             }
         else {
-            calcPolinomio_lento(p, a, px1, dpx);
-            calcPolinomio_lento(p, xM.f, px2, dpx);
+            calcPolinomio_lento(p, a, &px1, &dpx);
+            calcPolinomio_lento(p, xM.f, &px2, &dpx);
         }
 
-        if((*px1)*(*px2) < 0)
+        if(px1*px2 < 0)
             b = xM.f;
-        else if((*px1)*(*px2) > 0)
+        else if(px1*px2 > 0)
             a = xM.f;
     }
     *raiz = xM.f;
-    free(px1);
-    free(px2);
-    free(dpx);
     return 0;
 }
 
@@ -128,7 +122,7 @@ int main() {
     *px = *dpx = 0;
     int *px1;
     px1 = malloc(sizeof(int));
-    bisseccao(*p,0,3,1,px1,dpx,1); 
+    bisseccao(*p,0,3,0,px1,dpx,1); 
     printf("IT: %d\n", *px1);
     printf("RAIZ: %f\n", *dpx);
     newtonRaphson(*p, 3, 0, px1, dpx, 1);
