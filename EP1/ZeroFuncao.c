@@ -63,7 +63,8 @@ real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, 
             b = xM.f;
         else if(px1*px2 > 0)
             a = xM.f;
-    } while(((!criterioParada && (fabs(xM.f - xM_old.f) > EPS))||(criterioParada == 1 && (fabs(xM.f) > DBL_EPSILON))||(criterioParada == 2 && (fabs(xM.i - xM_old.i) > ULPS))) && (*it < MAXIT)); 
+        printf("PX2: %e\nDBL: %e\n", px2, DBL_EPSILON);
+    } while(((!criterioParada && (fabs(xM.f - xM_old.f) > EPS))||(criterioParada == 1 && (fabs(px2) > DBL_EPSILON))||(criterioParada == 2 && (fabs(xM.i - xM_old.i) > ULPS))) && (*it < MAXIT)); 
     *raiz = xM.f;
 
     switch(criterioParada) {
