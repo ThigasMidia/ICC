@@ -5,22 +5,83 @@
 #include "utils.h"
 #include "ZeroFuncao.h"
 
-int main ()
-{
+int main () {
+    real_t a, b;
+    Polinomio pol;
 
-  real_t a, b;
-  Polinomio pol;
+    scanf("%d", &pol.grau);
+    
+    for (int i=pol.grau; i >=0; --i)
+        scanf("%lf", &pol.p[i]);
 
-  scanf("%d", &pol.grau);
+    scanf("%lf %lf", &a, &b); // intervalo onde está uma das raizes.
+    
+    int it = 0;
+    real_t raiz = 0;
+    real_t erro;
+    real_t tempo;
 
-  for (i=pol.grau; i >=0; --i)
-    scanf("%lf", &pol.p[i]);
+    printf("RAPIDO\n\n");
+    
+    //bisseccao rapida
+    tempo = timestamp();
+    erro = bisseccao(pol, a, b, 0, &it, &raiz, 1);
+    tempo = timestamp() - tempo;
+    printf("bissec %.15e %.15e %3d %.8e\n", raiz, erro, it, tempo);
+    tempo = timestamp();
+    erro = bisseccao(pol, a, b, 1, &it, &raiz, 1);
+    tempo = timestamp() - tempo;
+    printf("bissec %.15e %.15e %3d %.8e\n", raiz, erro, it, tempo);
+    tempo = timestamp();
+    erro = bisseccao(pol, a, b, 2, &it, &raiz, 1);
+    tempo = timestamp() - tempo;
+    printf("bissec %.15e %.15e %3d %.8e\n", raiz, erro, it, tempo);
 
-  scanf("%lf %lf", &a, &b); // intervalo onde está uma das raizes.
+    //newton-raphson rapido
+    tempo = timestamp();
+    erro = newtonRaphson(pol, 1, 0, &it, &raiz, 1);
+    tempo = timestamp() - tempo;
+    printf("newton %.15e %.15e %3d %.8e\n", raiz, erro, it, tempo);
+    tempo = timestamp();
+    erro = newtonRaphson(pol, 1, 1, &it, &raiz, 1);
+    tempo = timestamp() - tempo;
+    printf("newton %.15e %.15e %3d %.8e\n", raiz, erro, it, tempo);
+    tempo = timestamp();
+    erro = newtonRaphson(pol, 1, 2, &it, &raiz, 1);
+    tempo = timestamp() - tempo;
+    printf("newton %.15e %.15e %3d %.8e\n\n", raiz, erro, it, tempo);
 
 
-  // Restante do programa a partir daqui
+    printf("LENTO\n\n");
 
-  return 0;
+    //bissecao lenta
+    tempo = timestamp();
+    erro = bisseccao(pol, a, b, 0, &it, &raiz, 0);
+    tempo = timestamp() - tempo;
+    printf("bissec %.15e %.15e %3d %.8e\n", raiz, erro, it, tempo);
+    tempo = timestamp();
+    erro = bisseccao(pol, a, b, 1, &it, &raiz, 0);
+    tempo = timestamp() - tempo;
+    printf("bissec %.15e %.15e %3d %.8e\n", raiz, erro, it, tempo);
+    tempo = timestamp();
+    erro = bisseccao(pol, a, b, 2, &it, &raiz, 0);
+    tempo = timestamp() - tempo;
+    printf("bissec %.15e %.15e %3d %.8e\n", raiz, erro, it, tempo);
+
+    //newton-raphson lento
+    tempo = timestamp();
+    erro = newtonRaphson(pol, 1, 0, &it, &raiz, 0);
+    tempo = timestamp() - tempo;
+    printf("newton %.15e %.15e %3d %.8e\n", raiz, erro, it, tempo);
+    tempo = timestamp();
+    erro = newtonRaphson(pol, 1, 1, &it, &raiz, 0);
+    tempo = timestamp() - tempo;
+    printf("newton %.15e %.15e %3d %.8e\n", raiz, erro, it, tempo);
+    tempo = timestamp();
+    erro = newtonRaphson(pol, 1, 2, &it, &raiz, 0);
+    tempo = timestamp() - tempo;
+    printf("newton %.15e %.15e %3d %.8e\n\n", raiz, erro, it, tempo);
+    
+    return 0;
 }
 
