@@ -13,24 +13,23 @@ real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_
     Double_t xM, xOld;
 
     xM.f = x0;
-    int zero = 2;
      do {
         (*it)++;
         xOld.f = xM.f;
-        if(Rapido) 
+        if(Rapido)
             calcPolinomio_rapido(p, xM.f, &px, &dpx);
         else 
             calcPolinomio_lento(p, xM.f, &px, &dpx);
         
         xM.f -= px/dpx;
-    } while(((!criterioParada && fabs(xM.f - xOld.f) > EPS)||(criterioParada == 1 && fabs(xM.f) > DBL_EPSILON)||(criterioParada == 2 && fabs(xM.i - xOld.i) > ULPS)) && (*it < MAXIT));
+    } while(((!criterioParada && fabs(xM.f - xOld.f) > EPS)||(criterioParada == 1 && fabs(px/dpx) > DBL_EPSILON)||(criterioParada == 2 && fabs(xM.i - xOld.i) > ULPS)) && (*it < MAXIT));
     *raiz = xM.f;
 
     switch(criterioParada) {
         case 0:
             return fabs(xM.f - xOld.f);
         case 1:
-            return fabs(xM.f);
+            return fabs(px/dpx);
         default:
             return fabs(xM.i - xOld.i);
     }
@@ -63,15 +62,14 @@ real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, 
             b = xM.f;
         else if(px1*px2 > 0)
             a = xM.f;
-        printf("PX2: %e\nDBL: %e\n", px2, DBL_EPSILON);
-    } while(((!criterioParada && (fabs(xM.f - xM_old.f) > EPS))||(criterioParada == 1 && (fabs(px2) > DBL_EPSILON))||(criterioParada == 2 && (fabs(xM.i - xM_old.i) > ULPS))) && (*it < MAXIT)); 
+    } while(((!criterioParada && (fabs(xM.f - xM_old.f) > EPS))||(criterioParada == 1 && (fabs(a-b) > DBL_EPSILON))||(criterioParada == 2 && (fabs(xM.i - xM_old.i) > ULPS))) && (*it < MAXIT)); 
     *raiz = xM.f;
 
     switch(criterioParada) {
         case 0:
             return fabs(xM.f - xM_old.f);
         case 1:
-            return fabs(xM.f);
+            return fabs(a-b);
         default:
             return fabs(xM.i - xM_old.i);
     }
