@@ -8,9 +8,10 @@
 int main () {
     real_t a, b;
     Polinomio pol;
-
+    
     scanf("%d", &pol.grau);
     
+    pol.p = malloc(sizeof(real_t) * (pol.grau+1));
     for (int i=pol.grau; i >=0; --i)
         scanf("%lf", &pol.p[i]);
 
@@ -80,7 +81,9 @@ int main () {
     tempo = timestamp();
     erro = newtonRaphson(pol, 1, 2, &it, &raiz, 0);
     tempo = timestamp() - tempo;
-    printf("newton %.15e %.15e %3d %.8e\n\n", raiz, erro, it, tempo);
+    printf("newton %.15e %.15e %3d %.8e\n", raiz, erro, it, tempo);
+
+    free(pol.p);
     
     return 0;
 }

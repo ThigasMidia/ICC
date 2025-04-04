@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <fenv.h>
 
 #include "utils.h"
 #include "DoubleType.h"
@@ -8,6 +9,7 @@
 
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro
 real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_t *raiz, int Rapido) {
+    fesetround(FE_DOWNWARD);
     *it = 0;
     real_t px, dpx;
     Double_t xM, xOld;
@@ -22,7 +24,7 @@ real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_
             calcPolinomio_lento(p, xM.f, &px, &dpx);
         
         xM.f -= px/dpx;
-    } while(((!criterioParada && fabs(xM.f - xOld.f) > EPS)||(criterioParada == 1 && fabs(px/dpx) > DBL_EPSILON)||(criterioParada == 2 && fabs(xM.i - xOld.i) > ULPS)) && (*it < MAXIT));
+    } while(((!criterioParada && fabs(xM.f - xOld.f) > EPS)||(criterioParada == 1 && fabs(px) > ZERO)||(criterioParada == 2 && fabs(xM.i - xOld.i) > ULPS)) && (*it < MAXIT));
     *raiz = xM.f;
 
     switch(criterioParada) {
@@ -38,6 +40,7 @@ real_t newtonRaphson (Polinomio p, real_t x0, int criterioParada, int *it, real_
 
 // Retorna valor do erro quando método finalizou. Este valor depende de tipoErro
 real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, real_t *raiz, int Rapido) {
+    fesetround(FE_DOWNWARD);
     *it = 0;
     Double_t xM, xM_old;
     real_t px1, px2, dpx;
@@ -62,9 +65,9 @@ real_t bisseccao (Polinomio p, real_t a, real_t b, int criterioParada, int *it, 
             b = xM.f;
         else if(px1*px2 > 0)
             a = xM.f;
-    } while(((!criterioParada && (fabs(xM.f - xM_old.f) > EPS))||(criterioParada == 1 && (fabs(a-b) > DBL_EPSILON))||(criterioParada == 2 && (fabs(xM.i - xM_old.i) > ULPS))) && (*it < MAXIT)); 
+    } while(((!criterioParada && (fabs(xM.f - xM_old.f) > EPS))||(criterioParada == 1 && (fabs(px2) > ZERO))||(criterioParada == 2 && (fabs(xM.i - xM_old.i) > ULPS))) && (*it < MAXIT)); 
     *raiz = xM.f;
-
+    
     switch(criterioParada) {
         case 0:
             return fabs(xM.f - xM_old.f);
@@ -89,14 +92,13 @@ void calcPolinomio_rapido(Polinomio p, real_t x, real_t *px, real_t *dpx) {
 
 
 void calcPolinomio_lento(Polinomio p, real_t x, real_t *px, real_t *dpx) {
-    *px = 0;
+    *px = p.p[0];
     *dpx = 0;
 
     for(int i = p.grau; i > 0; i--) {
         *px += p.p[i]*pow(x,i);
         *dpx += i*p.p[i]*pow(x,i-1);
     }
-    *px += p.p[0]*pow(x,0);
 
     return;
 }

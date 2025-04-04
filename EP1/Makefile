@@ -1,6 +1,6 @@
     CC     = gcc
 
-    CFLAGS = -O0
+    CFLAGS = -O0 -g 
     LFLAGS = -lm
 
       PROG = labZero

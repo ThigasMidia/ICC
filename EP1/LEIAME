@@ -1,0 +1,11 @@
+ALTERAÇÕES:
+
+ZeroFuncao.h ZeroFuncao.c
+1: Mudança nos parâmetros de bisseccao e newton. Adicionado parâmetro de decisão de algoritmo de calculo de polinômios.
+   0 se deseja fazer o cálculo lento e 1 se deseja fazer o cálculo rápido (int Rapido).
+2: Inclusão da biblioteca <fenv.h> para utilização do valor FE_DOWNWARD em arredondamentos de operações com ponto flutuante.
+
+labZero.c
+1: Mudança na estrutura de leitura. Adicionado malloc em Polinomio pol para evitar segfaults.
+2: Mudança na estrutura de print. Ao imprimir quantidade de iterações, toma exatamente 3 espaços para evitar desalinhamento das linhas.
+
