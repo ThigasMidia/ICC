@@ -10,12 +10,12 @@
     LFLAGS = -lm
 
 # Lista de arquivos para distribuição
-DISTFILES = *.c *.h LEIAME* Makefile
+DISTFILES = *.c *.h LEIAME* Makefile sistemas.dat
 DISTDIR = ${USER}
 
 .PHONY: all clean purge dist
 
-%.o: %.c %.h utils.h SL_aux.h
+%.o: %.c %.h utils.h 
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 all: $(PROG)

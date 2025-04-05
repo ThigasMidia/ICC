@@ -2,10 +2,11 @@
 #define __SL_AUX_H__
 
 #define MAXIT 50
+#include "utils.h"
 
 typedef struct {
-    real_t **A
-    real_t *b
+    real_t **A;
+    real_t *b;
     int_t ordem;
 } SL;
 
@@ -15,6 +16,8 @@ void destroiSistema(SL sistema);
 void trocaLinha(SL sistema, int_t indice, int_t pivo);
 int_t encontraMax(SL sistema, int_t comeco);
 void pivotamento(SL sistema, int_t i);
+
+void retrossubs(SL sistema, real_t *x);
 
 void eliminacaoGauss(SL sistema);
 void gaussSeidel(SL sistema);
