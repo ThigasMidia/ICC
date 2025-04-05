@@ -1,12 +1,12 @@
 # PROGRAMA
     PROG = perfSL
-    OBJS = utils.o # acrescentar aqui outros módulos do programa
+    OBJS = utils.o SL_aux.o # acrescentar aqui outros módulos do programa
 
 # Compilador
     CC     = gcc
 
 # Acrescentar onde apropriado as opções para incluir uso da biblioteca LIKWID
-    CFLAGS = -O0 
+    CFLAGS = -O0 -g
     LFLAGS = -lm
 
 # Lista de arquivos para distribuição
@@ -15,12 +15,12 @@ DISTDIR = ${USER}
 
 .PHONY: all clean purge dist
 
-%.o: %.c %.h
+%.o: %.c %.h utils.h SL_aux.h
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 all: $(PROG)
 
-$(PROG): % : %.o $(OBJS)
+$(PROG): % : %.o $(OBJS) 
 	$(CC) $(CFLAGS) -o $@ $^ $(LFLAGS)
 
 clean:

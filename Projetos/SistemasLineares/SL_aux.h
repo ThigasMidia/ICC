@@ -10,10 +10,11 @@ typedef struct {
 } SL;
 
 SL constroiSistema();
-SL destroiSistema(SL sistema);
+void destroiSistema(SL sistema);
 
 void trocaLinha(SL sistema, int_t indice, int_t pivo);
 int_t encontraMax(SL sistema, int_t comeco);
+void pivotamento(SL sistema, int_t i);
 
 void eliminacaoGauss(SL sistema);
 void gaussSeidel(SL sistema);
