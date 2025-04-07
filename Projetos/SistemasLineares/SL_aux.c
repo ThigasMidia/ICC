@@ -1,8 +1,10 @@
 #include <stdio.h>
+#include <fenv.h>
 #include "SL_aux.h"
 #include "utils.h"
 
 void eliminacaoGauss(SL sistema) {
+    fesetround(FE_DOWNWARD);
     for(int i = 0; i < sistema.ordem; i++) {
        pivotamento(sistema, i);
 
@@ -16,7 +18,26 @@ void eliminacaoGauss(SL sistema) {
     }
 }
 
+void gaussSeidel(SL sistema, real_t *x, int_t *it) {
+    fesetround(FE_DOWNWARD);
+    *it = 0;
+    real_t val;
+    while(*it < MAXIT) {
+        (*it)++;
+        for(int i = 0; i < sistema.ordem;i++) {
+            val = sistema.b[i];
+            for(int j = 0; j < sistema.ordem;j++) {
+                if(i != j ) 
+                    val -= sistema.A[i][j] * x[j];
+            }
+            val /= sistema.A[i][i];
+            x[i] = val;
+        }
+    }
+}
+
 void retrossubs(SL sistema, real_t *x) {
+    fesetround(FE_DOWNWARD);
     for(int i = sistema.ordem-1; i >= 0; i--) {
         x[i] = sistema.b[i];
             for(int j = i+1; j < sistema.ordem; j++)
@@ -44,11 +65,42 @@ SL constroiSistema() {
     return sistema;
 }
 
+SL copiaSistema(SL copiado) {
+    SL sistema;
+    sistema.ordem = copiado.ordem;
+    sistema.A = malloc(sizeof(real_t)*sistema.ordem);
+
+    for(int i = 0;i < sistema.ordem;i++) 
+        sistema.A[i] = malloc(sizeof(real_t)*sistema.ordem);
+    sistema.b = malloc(sizeof(real_t)*sistema.ordem);
+
+    for(int i = 0; i < sistema.ordem;i++) {
+        for(int j = 0; j < sistema.ordem;j++) {
+            sistema.A[i][j] = copiado.A[i][j];
+        }
+        sistema.b[i] = copiado.b[i];
+    }
+
+    return sistema;
+}
+
 void destroiSistema(SL sistema) { 
     for(int i = 0;i < sistema.ordem;i++) 
         free(sistema.A[i]);
     free(sistema.A);
     free(sistema.b);
+}
+
+void calculaResiduo(SL sistema, real_t *x, real_t *r) {
+    fesetround(FE_DOWNWARD);
+    real_t resi;
+    for(int i = 0; i < sistema.ordem;i++) {
+        resi = 0.0;
+        for(int j = 0; j < sistema.ordem;j++) 
+            resi += sistema.A[i][j] * x[j];
+        resi -= sistema.b[i];
+        r[i] = resi;
+    }
 }
 
 void trocaLinha(SL sistema, int_t indice, int_t pivo) {
