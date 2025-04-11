@@ -2,6 +2,7 @@
 #define __SL_AUX_H__
 
 #define MAXIT 50
+#define EPS 1.0e-4
 #include "utils.h"
 
 typedef struct {

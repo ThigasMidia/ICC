@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include <fenv.h>
 #include "SL_aux.h"
 #include "utils.h"
@@ -22,8 +23,10 @@ void gaussSeidel(SL sistema, real_t *x, int_t *it) {
     fesetround(FE_DOWNWARD);
     *it = 0;
     real_t val;
-    while(*it < MAXIT) {
+    real_t diffMax, diffAtual;
+    do {
         (*it)++;
+        diffMax = 0.0;
         for(int i = 0; i < sistema.ordem;i++) {
             val = sistema.b[i];
             for(int j = 0; j < sistema.ordem;j++) {
@@ -31,9 +34,12 @@ void gaussSeidel(SL sistema, real_t *x, int_t *it) {
                     val -= sistema.A[i][j] * x[j];
             }
             val /= sistema.A[i][i];
+            diffAtual = fabs(x[i] - val);
+            if(diffAtual > diffMax)
+                diffMax = diffAtual;
             x[i] = val;
         }
-    }
+    } while(*it < MAXIT && diffMax > EPS);
 }
 
 void retrossubs(SL sistema, real_t *x) {
