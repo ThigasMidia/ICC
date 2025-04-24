@@ -1,12 +1,12 @@
 # PROGRAMA
     PROG = resolveEDO
-    OBJS = resolveEDO.o edo.o utils.o # mod1.o mod2.o
+    OBJS = resolveEDO.o edo.o utils.o edo_aux.o # mod1.o mod2.o
 
 # Compilador
     CC     = gcc
 
 # Acrescentar onde apropriado as opções para incluir uso da biblioteca LIKWID
-    CFLAGS = -O0
+    CFLAGS = -O0 -g
     LFLAGS = -lm
 
 # Lista de arquivos para distribuição. Acrescentar mais arquivos se necessário.
