@@ -38,14 +38,35 @@ Tridiag *genTridiag (EDo *edo)
 }
 
 
-rtime_t void gaussSeidel_3Diag (Tridiag *sl, real_t *Y, unsigned int maxiter, *tTotal)
+rtime_t void gaussSeidel_3Diag (Tridiag *sl, real_t *Y, unsigned int maxiter);
 {
   int n = sl->n;
+  unsigned int it = 0;
+  real_t val;
   
   rtime_t tTotal = timestamp();
 
   // algoritmo  Gauss-Seidel   com  vetores   das  diagonais   e  termos
   // independentes do SL
+  do {
+    it++;
+    val = sl.B[0];
+    val -= Y[1] * sl.Ds[0];
+    val /= sl.D[0];
+    Y[0] = val;
+    for(int i = 1; i < n-1; i++) {
+        val = sl.B[i];
+        val -= Y[i-1] * sl.Di[i-1];
+        val -= Y[i+1] * sl.Ds[i];
+        val /= sl.D[i];
+        Y[1] = val;
+    }
+    val = sl.B[n-1];
+    val -= Y[n-2] * sl.Di[n-2];
+    val /= sl.D[n-1];
+    Y[n-1] = val;
+
+  } while(it < maxiter);
 
   return timestamp() - tTotal;
 
@@ -81,6 +102,22 @@ rtime_t gaussSeidel_EDO (EDo *edoeq, real_t *Y, unsigned int maxiter)
 
     // algoritmo Gauss-Seidel usando parâmetros EDO, sem usar vetores para
     // diagonais e termos independentes do SL
+    for(i = 0; i < n; i++) {
+        x = edoeq->a + (i+1)*h;
+        b = h*h * edoeq->r(x);
+        di = 1 - h * edoeq->p(x)/2.0;
+        d = -2 + h*h * edoeq->q(x);
+        ds = 1 + h * edoeq->p(x)/2.0;
+
+        if(!i) 
+            b -= ds*Y[i+1] + edoeq->ya * (1 - h*edoeq->p(edoeq->a+h)/2.0);
+        else if(i == n-1)
+            b -= di*Y[i-1] - edoeq->yb * (1 + h*edoeq->p(edoeq->b-h)/2.0);
+        else
+            b -= ds*Y[i+1] + di*Y[i-1];
+
+        Y[i] = b / d;
+    }
 
   }
 

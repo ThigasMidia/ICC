@@ -7,7 +7,7 @@
 void eliminacaoGauss(SL sistema) {
     fesetround(FE_DOWNWARD);
     for(int i = 0; i < sistema.ordem; i++) {
-       pivotamento(sistema, i);
+       pivoteamento(sistema, i);
 
        for(int k=i+1; k < sistema.ordem; k++) {
             real_t m = sistema.A[k][i] / sistema.A[i][i];
@@ -126,7 +126,7 @@ int_t encontraMax(SL sistema, int_t comeco) {
     return max;
 }
 
-void pivotamento(SL sistema, int_t i) {
+void pivoteamento(SL sistema, int_t i) {
     int_t pivo = encontraMax(sistema, i);
     if(i != pivo)
         trocaLinha(sistema, i, pivo);
