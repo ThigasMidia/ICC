@@ -6,7 +6,7 @@
 void main() {
 
     EDo *hype;
-
+    real_t *X;
     hype = malloc(sizeof(EDo));
     hype->n = 0;
     hype->a = 0;
@@ -20,15 +20,21 @@ void main() {
     hype->r3 = 0;
     hype->r4 = 0;
     scanf("%d", &hype->n);
-    scanf("%f %f", &hype->a, &hype->b);
-    scanf("%f %f", &hype->ya, &hype->yb);
-    scanf("%f %f", &hype->p, &hype->q);
-    scanf("%f %f %f %f", &hype->r1, &hype->r2, &hype->r3, &hype->r4);
+    X = calloc(hype->n, sizeof(real_t));
+    scanf("%lf %lf", &hype->a, &hype->b);
+    scanf("%lf %lf", &hype->ya, &hype->yb);
+    scanf("%lf %lf", &hype->p, &hype->q);
+    scanf("%lf %lf %lf %lf", &hype->r1, &hype->r2, &hype->r3, &hype->r4);
     Tridiag *tri;
     tri = genTridiag(hype);
     prnEDOsl(hype);
     prnSL(*tri);
     printf("\n\n\n\n\n");
-    fatLUTridiag(tri);
+    transformaLUT(tri);
     prnSL(*tri);
+    fatoracaoLUT(tri, X);
+    printf("\n\n");
+    for(int i = 0; i < hype->n; i++)
+        printf(FORMAT, X[i]);
+    printf("\n\n");
 }
