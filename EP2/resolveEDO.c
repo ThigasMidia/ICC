@@ -28,10 +28,7 @@ void main() {
     Tridiag *tri;
     tri = genTridiag(hype);
     prnEDOsl(hype);
-    prnSL(*tri);
-    printf("\n\n\n\n\n");
     transformaLUT(tri);
-    prnSL(*tri);
     fatoracaoLUT(tri, X);
     printf("\n\n");
     for(int i = 0; i < hype->n; i++)

@@ -23,7 +23,6 @@ typedef struct {
 
 Tridiag *genTridiag (EDo *edoeq);
 void prnEDOsl (EDo *edoeq);
-void prnSL (Tridiag tri);
 
 #endif // __EQDIFF_H__
 

@@ -1,9 +1,11 @@
 #include <stdio.h>
+#include <fenv.h>
 #include "utils.h"
 #include "edo.h"
 #include "edo_aux.h"
 
 void transformaLUT(Tridiag *A) {
+    fesetround(FE_DOWNWARD);
     real_t m;
     
     for(int i = 0; i < A->n-1; ++i) {
@@ -14,6 +16,7 @@ void transformaLUT(Tridiag *A) {
 }
 
 void lowerRetrossubs(Tridiag *L, real_t *Y) {
+    fesetround(FE_DOWNWARD);
     int n = L->n;
     Y[0] = L->B[0];
 
@@ -23,6 +26,7 @@ void lowerRetrossubs(Tridiag *L, real_t *Y) {
 }
 
 void upperRetrossubs(Tridiag *U, real_t *X) {
+    fesetround(FE_DOWNWARD);
     int n = U->n;
     X[n-1] = X[n-1] / U->D[n-1];
 

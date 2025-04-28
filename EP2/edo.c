@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "edo.h"
 
+// Gera Tridiagonal a partir de uma EDO
 Tridiag *genTridiag (EDo *edo)
 {
   Tridiag *sl;
@@ -37,6 +38,7 @@ Tridiag *genTridiag (EDo *edo)
   return sl;
 }
 
+//Le outra sequencia "r" e refaz o vetor B da tridiagonal 
 
 // Exibe SL na saída padrão
 void prnEDOsl (EDo *edoeq)
@@ -77,24 +79,4 @@ void prnEDOsl (EDo *edoeq)
       
     printf ("\n");
   }
-}
-
-void prnSL (Tridiag tri) {
-    real_t zero = 0.0;
-    for(int i = 0; i < tri.n; i++) {
-        for(int j = 0; j < tri.n; j++) {
-            if(j == i) {
-                printf(FORMAT, tri.D[i]);
-            }
-            else if((j - i) == 1) {
-                printf(FORMAT, tri.Ds[i]);
-            }
-            else if((j - i) == -1) {
-                printf(FORMAT, tri.Di[i-1]);
-            }
-            else
-                printf("%23.15e", zero);
-        }
-        printf("\n");
-    }
 }
