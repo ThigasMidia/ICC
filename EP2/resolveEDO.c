@@ -5,33 +5,44 @@
 
 void main() {
 
-    EDo *hype;
+    EDo hype;
     real_t *X;
-    hype = malloc(sizeof(EDo));
-    hype->n = 0;
-    hype->a = 0;
-    hype->b = 0;
-    hype->ya = 0;
-    hype->yb = 0;
-    hype->p = 0;
-    hype->q = 0;
-    hype->r1 = 0;
-    hype->r2 = 0;
-    hype->r3 = 0;
-    hype->r4 = 0;
-    scanf("%d", &hype->n);
-    X = calloc(hype->n, sizeof(real_t));
-    scanf("%lf %lf", &hype->a, &hype->b);
-    scanf("%lf %lf", &hype->ya, &hype->yb);
-    scanf("%lf %lf", &hype->p, &hype->q);
-    scanf("%lf %lf %lf %lf", &hype->r1, &hype->r2, &hype->r3, &hype->r4);
+    scanf("%d", &hype.n);
+    X = calloc(hype.n, sizeof(real_t));
+    scanf("%lf %lf", &hype.a, &hype.b);
+    scanf("%lf %lf", &hype.ya, &hype.yb);
+    scanf("%lf %lf", &hype.p, &hype.q);
+    int i = 0;
+    real_t Rs[400];
+    while(scanf("%lf %lf %lf %lf", &Rs[i], &Rs[i+1], &Rs[i+2], &Rs[i+3]) == 4) {
+        i += 4;
+    }
+
     Tridiag *tri;
-    tri = genTridiag(hype);
-    prnEDOsl(hype);
+    tri = genTridiag(&hype);
+
+    //LIKWID PARA FATORACAO LU
     transformaLUT(tri);
-    fatoracaoLUT(tri, X);
-    printf("\n\n");
-    for(int i = 0; i < hype->n; i++)
-        printf(FORMAT, X[i]);
-    printf("\n\n");
+
+    rtime_t tempo;
+
+    for(int j = 0; j < i; j = j+4) {
+        hype.r1 = Rs[j];
+        hype.r2 = Rs[j+1];
+        hype.r3 = Rs[j+2];
+        hype.r4 = Rs[j+3];
+        if(j != 0)
+            refazB(tri, &hype);
+        prnEDOsl(&hype);
+        tempo = timestamp();
+        //LIKWID PARA RETROSSUBS
+        fatoracaoLUT(tri, X);
+        tempo = timestamp() - tempo;
+        printf("\n\n");
+        for(int i = 0; i < hype.n; i++)
+            printf(FORMAT, X[i]);
+        printf("\n");
+        printf(FORMAT, tempo);
+        printf("\n\n");
+    }
 }

@@ -10,7 +10,7 @@
     LFLAGS = -lm
 
 # Lista de arquivos para distribuição. Acrescentar mais arquivos se necessário.
-DISTFILES = *.c *.h LEIAME* Makefile edos.dat
+DISTFILES = *.c *.h LEIAME* Makefile edos.dat teste.dat
 DISTDIR = ${USER}
 
 .PHONY: clean purge dist all

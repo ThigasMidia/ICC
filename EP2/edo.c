@@ -38,7 +38,18 @@ Tridiag *genTridiag (EDo *edo)
   return sl;
 }
 
-//Le outra sequencia "r" e refaz o vetor B da tridiagonal 
+//Le outra sequencia "r" e refaz o vetor B da tridiagonal
+void refazB(Tridiag *sl, EDo *edo) {
+    int n = edo->n;
+    real_t x, rx, h = (edo->b - edo->a)/(n+1);
+    for(int i = 0; i < n; i++) {
+        x = edo->a + (i+1)*h;
+        rx = edo->r1*x + edo->r2*x*x + edo->r3*cos(x) + edo->r4*exp(x);
+        sl->B[i] = h*h * rx;
+    }
+    sl->B[0] -= edo->ya * (1 - h*edo->p/2.0);
+    sl->B[n-1] -= edo->yb * (1 + h*edo->p/2.0);
+}
 
 // Exibe SL na saída padrão
 void prnEDOsl (EDo *edoeq)
