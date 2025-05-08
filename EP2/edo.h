@@ -22,7 +22,9 @@ typedef struct {
 // Funções auxiliares
 
 Tridiag *genTridiag (EDo *edoeq);
+void liberaTridiag(Tridiag *sl);
 void refazB(Tridiag *sl, EDo *edo);
+int leEDO(real_t *X, real_t *R, EDo *EDO);
 void prnEDOsl (EDo *edoeq);
 
 #endif // __EQDIFF_H__

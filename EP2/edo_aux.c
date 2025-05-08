@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <fenv.h>
+#include <likwid.h>
 #include "utils.h"
 #include "edo.h"
 #include "edo_aux.h"

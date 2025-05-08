@@ -38,6 +38,15 @@ Tridiag *genTridiag (EDo *edo)
   return sl;
 }
 
+//libera memoria de Tridiag
+void liberaTridiag(Tridiag *sl) {
+    free(sl->D);
+    free(sl->Di);
+    free(sl->Ds);
+    free(sl->B);
+    free(sl);
+}
+
 //Le outra sequencia "r" e refaz o vetor B da tridiagonal
 void refazB(Tridiag *sl, EDo *edo) {
     int n = edo->n;
@@ -49,6 +58,24 @@ void refazB(Tridiag *sl, EDo *edo) {
     }
     sl->B[0] -= edo->ya * (1 - h*edo->p/2.0);
     sl->B[n-1] -= edo->yb * (1 + h*edo->p/2.0);
+}
+
+int leEDO(real_t *X, real_t *R, EDo *EDO) {
+    scanf("%lf %lf", &EDO->a, &EDO->b);
+    scanf("%lf %lf", &EDO->ya, &EDO->yb);
+    scanf("%lf %lf", &EDO->p, &EDO->q);
+    int i = 4;
+    scanf("%lf %lf %lf %lf", &R[0], &R[1], &R[2], &R[3]); 
+    EDO->r1 = R[0];
+    EDO->r2 = R[1];
+    EDO->r3 = R[2];
+    EDO->r4 = R[3];
+    while(scanf("%lf %lf %lf %lf", &R[i], &R[i+1], &R[i+2], &R[i+3]) == 4) {
+        
+        i += 4;
+    }
+
+    return i;
 }
 
 // Exibe SL na saída padrão

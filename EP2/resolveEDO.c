@@ -2,47 +2,55 @@
 #include "edo_aux.h"
 #include "utils.h"
 #include <stdio.h>
+#include <likwid.h>
 
 void main() {
+    LIKWID_MARKER_INIT;
 
-    EDo hype;
+    EDo EDO;
     real_t *X;
-    scanf("%d", &hype.n);
-    X = calloc(hype.n, sizeof(real_t));
-    scanf("%lf %lf", &hype.a, &hype.b);
-    scanf("%lf %lf", &hype.ya, &hype.yb);
-    scanf("%lf %lf", &hype.p, &hype.q);
-    int i = 0;
-    real_t Rs[400];
-    while(scanf("%lf %lf %lf %lf", &Rs[i], &Rs[i+1], &Rs[i+2], &Rs[i+3]) == 4) {
-        i += 4;
-    }
+    real_t *Rs;
+    scanf("%d", &EDO.n);
+    X = calloc(EDO.n, sizeof(real_t));
+    Rs = calloc(400, sizeof(real_t));
+    int i = leEDO(X, Rs, &EDO);
 
     Tridiag *tri;
-    tri = genTridiag(&hype);
+    tri = genTridiag(&EDO);
 
-    //LIKWID PARA FATORACAO LU
+    LIKWID_MARKER_START("LU");
     transformaLUT(tri);
+    LIKWID_MARKER_STOP("LU");
 
     rtime_t tempo;
-
+    char nome[5];
     for(int j = 0; j < i; j = j+4) {
-        hype.r1 = Rs[j];
-        hype.r2 = Rs[j+1];
-        hype.r3 = Rs[j+2];
-        hype.r4 = Rs[j+3];
+        sprintf(nome, "EDO%d", j/4);
+        EDO.r1 = Rs[j];
+        EDO.r2 = Rs[j+1];
+        EDO.r3 = Rs[j+2];
+        EDO.r4 = Rs[j+3];
+
         if(j != 0)
-            refazB(tri, &hype);
-        prnEDOsl(&hype);
+            refazB(tri, &EDO);
+
+        prnEDOsl(&EDO);
+
+        LIKWID_MARKER_START(nome);
         tempo = timestamp();
-        //LIKWID PARA RETROSSUBS
         fatoracaoLUT(tri, X);
         tempo = timestamp() - tempo;
+        LIKWID_MARKER_STOP(nome);
+
         printf("\n\n");
-        for(int i = 0; i < hype.n; i++)
-            printf(FORMAT, X[i]);
+        for(int a = 0; a < EDO.n; a++)
+            printf(FORMAT, X[a]);
         printf("\n");
         printf(FORMAT, tempo);
         printf("\n\n");
     }
+    free(X);
+    free(Rs);
+    liberaTridiag(tri);
+    LIKWID_MARKER_CLOSE;
 }
