@@ -42,7 +42,7 @@ void main() {
         tempo = timestamp() - tempo;
         LIKWID_MARKER_STOP(nome);
 
-        printf("\n\n");
+        printf("\n");
         for(int a = 0; a < EDO.n; a++)
             printf(FORMAT, X[a]);
         printf("\n");
