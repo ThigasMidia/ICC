@@ -51,15 +51,20 @@ void liberaTridiag(Tridiag *sl) {
 void refazB(Tridiag *sl, EDo *edo) {
     int n = edo->n;
     real_t x, rx, h = (edo->b - edo->a)/(n+1);
+
+    //Refaz o calculo do vetor B
     for(int i = 0; i < n; i++) {
         x = edo->a + (i+1)*h;
         rx = edo->r1*x + edo->r2*x*x + edo->r3*cos(x) + edo->r4*exp(x);
         sl->B[i] = h*h * rx;
     }
+    
+    //Subtrai condicoes de contorno
     sl->B[0] -= edo->ya * (1 - h*edo->p/2.0);
     sl->B[n-1] -= edo->yb * (1 + h*edo->p/2.0);
 }
 
+//Funcao auxiliar para leitura de uma EDO com "n" já lido
 int leEDO(real_t *X, real_t *R, EDo *EDO) {
     scanf("%lf %lf", &EDO->a, &EDO->b);
     scanf("%lf %lf", &EDO->ya, &EDO->yb);
@@ -112,7 +117,6 @@ void prnEDOsl (EDo *edoeq)
     else if (i == n-1)
       b -= edoeq->yb * (1 + h*edoeq->p/2.0);
 
-    printf (" | ");
     printf (FORMAT, b);
       
     printf ("\n");
