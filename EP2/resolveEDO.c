@@ -21,7 +21,7 @@ void main() {
 
     Tridiag *tri;
     tri = genTridiag(&EDO);
-    
+   
     //Transforma a tridiagonal em uma LU
     LIKWID_MARKER_START("LU");
     transformaLUT(tri);
