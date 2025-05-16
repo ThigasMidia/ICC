@@ -1,6 +1,8 @@
 #ifndef __EDO_AUX_H__
 #define __EDO_AUX_H__
 
+/*Thiago José Barzotto - GRR20235687*/
+
 //Transforma uma matriz tridiagonal em uma matriz LU
 void transformaLUT(Tridiag *A);
 

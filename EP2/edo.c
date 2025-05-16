@@ -5,6 +5,8 @@
 #include "utils.h"
 #include "edo.h"
 
+/*Thiago José Barzotto - GRR20235687*/
+
 // Gera Tridiagonal a partir de uma EDO
 Tridiag *genTridiag (EDo *edo)
 {

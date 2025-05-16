@@ -5,6 +5,7 @@
 #include "edo.h"
 #include "edo_aux.h"
 
+/*Thiago José Barzotto - GRR20235687*/
 
 //Transforma uma matriz tridiagonal em uma matriz LU
 void transformaLUT(Tridiag *A) {

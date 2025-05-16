@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <likwid.h>
 
+/*Thiago José Barzotto - GRR20235687*/
+
 void main() {
     LIKWID_MARKER_INIT;
     
@@ -28,7 +30,7 @@ void main() {
     LIKWID_MARKER_STOP("LU");
 
     rtime_t tempo;
-    char nome[5];
+    char nome[6];
     //Loop de processo dos diferentes coeficientes R
     for(int j = 0; j < i; j = j+4) {
         //Troca o nome do rotulo do LIKWID usado para calcular a fatoracao LU

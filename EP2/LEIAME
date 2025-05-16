@@ -1,0 +1,33 @@
+Thiago José Barzotto - tjb23
+GRR20235687
+
+----------------------------------- ALTERAÇÕES ----------------------------------- 
+
+edo.c: Funções extras adicionadas
+
+1 - liberaTridiag() libera espaço de memoria alocado por genTridiag();
+2 - refazB() recalcula o vetor B de resultados da tridiagonal. Funcao é chamada
+    apenas em caso de mais de uma entrada de "R".
+3 - leEdo() le de stdin todas as linhas necessarias para a EDo.
+
+----------------------------------------------------------------------------------
+
+
+------------------------------- ARQUIVO edo_aux.c --------------------------------
+
+edo_aux.c implementa funcoes para manipulacao de uma Tridiagonal
+
+1 - transformaLUT() transforma uma Tridiagonal em uma Tridiagonal LU
+2 - lowerRetrossubs() faz a retrossubstituição da matriz L com vetor B, obtendo Y
+3 - upperRetrossubs() faz a retrossubstituição da matriz U com o vetor Y, obtendo X
+4 - fatoracaoLUT() junta lowerRetrossubs() e upperRetrossubs() em uma função só
+    utilizando um único vetor para evitar manipulação errada de vetores
+
+----------------------------------------------------------------------------------
+
+----------------------------------- PROBLEMAS ------------------------------------
+
+1 - Tamanho de vetor de coeficientes "R" é limitado para suportar apenas 100 linhas
+    de coeficientes. O programa não consegue gerar mais de 100 soluções, quebrando
+
+----------------------------------------------------------------------------------

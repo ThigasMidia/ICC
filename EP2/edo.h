@@ -5,6 +5,8 @@ typedef double real_t;
 
 #define FORMAT "%23.15e"
 
+/*Thiago José Barzotto - GRR20235687*/
+
 // Sistema linear Tri-diagonal
 typedef struct {
   real_t *D, *Di, *Ds, *B;

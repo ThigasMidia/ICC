@@ -1,16 +1,16 @@
 # PROGRAMA
     PROG = resolveEDO
-    OBJS = resolveEDO.o edo.o utils.o edo_aux.o # mod1.o mod2.o
+    OBJS = resolveEDO.o edo.o utils.o edo_aux.o
 
 # Compilador
-    CC     = gcc
+    CC = gcc
 
 # Acrescentar onde apropriado as opções para incluir uso da biblioteca LIKWID
     CFLAGS = -O0 -g -DLIKWID_PERFMON -I${LIKWID_INCLUDE}
     LFLAGS = -lm -L${LIKWID_LIB} -llikwid
 
 # Lista de arquivos para distribuição. Acrescentar mais arquivos se necessário.
-DISTFILES = *.c *.h LEIAME* Makefile edos.dat teste.dat
+DISTFILES = *.c *.h LEIAME* Makefile edo.dat 
 DISTDIR = ${USER}
 
 .PHONY: clean purge dist all
